@@ -21,7 +21,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		if (args == null || args.length == 0) {
 			args = new String[3];
 			args[0] = "input/gtfs.zip";
-			args[1] = "../ca-longueuil-rtl-bus/res/raw/";
+			args[1] = "../ca-longueuil-rtl-bus-android/res/raw/";
 			args[2] = ""; // files-prefix
 		}
 		new LongueuilRTLBusAgencyTools().start(args);
