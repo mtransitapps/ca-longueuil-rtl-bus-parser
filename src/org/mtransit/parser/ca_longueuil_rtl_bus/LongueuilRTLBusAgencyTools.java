@@ -13,7 +13,7 @@ import org.mtransit.parser.mt.data.MTrip;
 
 // http://www.rtl-longueuil.qc.ca/en-CA/open-data/gtfs-files/
 // http://www.rtl-longueuil.qc.ca/transit/latestfeed/RTL.zip
-public class MontrealAMTBusAgencyTools extends DefaultAgencyTools {
+public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	public static final String ROUTE_TYPE_FILTER = "3"; // bus only
 
@@ -24,7 +24,7 @@ public class MontrealAMTBusAgencyTools extends DefaultAgencyTools {
 			args[1] = "../ca-longueuil-rtl-bus/res/raw/";
 			args[2] = ""; // files-prefix
 		}
-		new MontrealAMTBusAgencyTools().start(args);
+		new LongueuilRTLBusAgencyTools().start(args);
 	}
 
 	@Override
