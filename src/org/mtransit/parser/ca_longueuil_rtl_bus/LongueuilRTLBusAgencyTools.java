@@ -1,6 +1,7 @@
 package org.mtransit.parser.ca_longueuil_rtl_bus;
 
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mtransit.parser.DefaultAgencyTools;
@@ -62,83 +63,29 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		String stationName = cleanTripHeading(gTrip.trip_headsign);
 		mTrip.setHeadsignString(stationName, directionId);
 	}
-	
-	private static final String PLACE_CHAR_TERMINUS = "terminus ";
-	private static final String PLACE_CHAR_SECTEUR = "secteur ";
-	private static final String PLACE_CHAR_SECTEURS = "secteurs ";
-	private static final String PLACE_CHAR_ARRONDISSEMENT = "arrondissement ";
-	private static final String PLACE_CHAR_BOULEVARD = "boulevard";
 
-	private String cleanTripHeading(String heading) {
-		String result = heading.toLowerCase(Locale.ENGLISH);
-		if (result.contains(PLACE_CHAR_TERMINUS)) {
-			result = result.replace(PLACE_CHAR_TERMINUS, " ");
-		}
-		if (result.contains(PLACE_CHAR_SECTEUR)) {
-			result = result.replace(PLACE_CHAR_SECTEUR, " ");
-		}
-		if (result.contains(PLACE_CHAR_SECTEURS)) {
-			result = result.replace(PLACE_CHAR_SECTEURS, " ");
-		}
-		if (result.contains(PLACE_CHAR_ARRONDISSEMENT)) {
-			result = result.replace(PLACE_CHAR_ARRONDISSEMENT, " ");
-		}
-		if (result.contains(PLACE_CHAR_BOULEVARD)) {
-			result = result.replace(PLACE_CHAR_BOULEVARD, " ");
-		}
-		return cleanStopName(result);
+	private static final Pattern PLACE_CHAR_TERMINUS = Pattern.compile("(terminus )", Pattern.CASE_INSENSITIVE);
+	private static final Pattern PLACE_CHAR_SECTEUR = Pattern.compile("(secteur )", Pattern.CASE_INSENSITIVE);
+	private static final Pattern PLACE_CHAR_SECTEURS = Pattern.compile("(secteurs )", Pattern.CASE_INSENSITIVE);
+
+	private String cleanTripHeading(String result) {
+		result = MSpec.CLEAN_SLASHES.matcher(result).replaceAll(MSpec.CLEAN_SLASHES_REPLACEMENT);
+		result = Utils.replaceAll(result, MSpec.SPACE_CHARS, MSpec.SPACE);
+		result = PLACE_CHAR_TERMINUS.matcher(result).replaceAll(MSpec.SPACE);
+		result = PLACE_CHAR_SECTEUR.matcher(result).replaceAll(MSpec.SPACE);
+		result = PLACE_CHAR_SECTEURS.matcher(result).replaceAll(MSpec.SPACE);
+		result = Utils.replaceAll(result, MSpec.SPACE_ST, MSpec.SPACE);
+		return MSpec.cleanLabelFR(result);
 	}
-	
-	private static final String PLACE_CHAR_ET = " et ";
-	private static final String PLACE_CHAR_AV = "av. ";
-	private static final String PLACE_CHAR_CH = "ch. ";
-	private static final String PLACE_CHAR_BOUL = "boul. ";
-	private static final String PLACE_CHAR_RTE = "rte ";
-	private static final String PLACE_CHAR_TSSE = "tsse ";
-	private static final String PLACE_CHAR_SAINT = "saint";
 
-	private static final String PLACE_CHAR_D = "d'";
-	private static final String PLACE_CHAR_DE = "de ";
-	private static final String PLACE_CHAR_DES = "des ";
-	private static final String PLACE_CHAR_DU = "du ";
-	private static final String PLACE_CHAR_LA = "la ";
-	private static final String PLACE_CHAR_LE = "le ";
-	private static final String PLACE_CHAR_LES = "les ";
-	private static final String PLACE_CHAR_L = "l'";
-
-	private static final String[] REMOVE_CHARS = new String[] { PLACE_CHAR_D, PLACE_CHAR_DE, PLACE_CHAR_DES, PLACE_CHAR_DU, PLACE_CHAR_LA, PLACE_CHAR_LE,
-			PLACE_CHAR_LES, PLACE_CHAR_L };
-
-	private static final String[] REPLACE_CHARS = new String[] { " " + PLACE_CHAR_D, " " + PLACE_CHAR_DE, " " + PLACE_CHAR_DES, " " + PLACE_CHAR_DU,
-			" " + PLACE_CHAR_LA, " " + PLACE_CHAR_LE, " " + PLACE_CHAR_LES, " " + PLACE_CHAR_L };
+	public static final Pattern RTL_LONG = Pattern.compile("(du reseau de transport de longueuil)", Pattern.CASE_INSENSITIVE);
+	public static final String RTL_SHORT = "R.T.L.";
 
 	@Override
 	public String cleanStopName(String gStopName) {
-		String result = gStopName.toLowerCase(Locale.ENGLISH);
-		if (result.contains(PLACE_CHAR_ET)) {
-			result = result.replace(PLACE_CHAR_ET, " / ");
-		}
-		result = MSpec.CLEAN_SLASHES.matcher(result).replaceAll(MSpec.CLEAN_SLASHES_REPLACEMENT);
-		if (result.contains(PLACE_CHAR_AV)) {
-			result = result.replace(PLACE_CHAR_AV, " ");
-		}
-		if (result.contains(PLACE_CHAR_CH)) {
-			result = result.replace(PLACE_CHAR_CH, " ");
-		}
-		if (result.contains(PLACE_CHAR_BOUL)) {
-			result = result.replace(PLACE_CHAR_BOUL, " ");
-		}
-		if (result.contains(PLACE_CHAR_RTE)) {
-			result = result.replace(PLACE_CHAR_RTE, " ");
-		}
-		if (result.contains(PLACE_CHAR_TSSE)) {
-			result = result.replace(PLACE_CHAR_TSSE, " ");
-		}
-		if (result.contains(PLACE_CHAR_SAINT)) {
-			result = result.replace(PLACE_CHAR_SAINT, "St");
-		}
-		result = MSpec.removeStartWith(result, REMOVE_CHARS, 1); // 1 = keep space
-		result = MSpec.replaceAll(result, REPLACE_CHARS, " ");
-		return MSpec.cleanLabel(result);
+		gStopName = gStopName.toLowerCase(Locale.ENGLISH); // SOURCE FILE ALL CAPS !!!
+		gStopName = MSpec.CONVERT_ET_TO_SLASHES.matcher(gStopName).replaceAll(MSpec.CONVERT_ET_TO_SLASHES_REPLACEMENT);
+		gStopName = RTL_LONG.matcher(gStopName).replaceAll(RTL_SHORT);
+		return super.cleanStopNameFR(gStopName);
 	}
 }
