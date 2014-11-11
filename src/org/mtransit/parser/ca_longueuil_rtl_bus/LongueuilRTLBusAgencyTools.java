@@ -3,7 +3,6 @@ package org.mtransit.parser.ca_longueuil_rtl_bus;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.Utils;
 import org.mtransit.parser.gtfs.data.GRoute;
@@ -47,11 +46,6 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		return super.excludeRoute(gRoute);
 	}
 
-	@Override
-	public String getRouteShortName(GRoute gRoute) {
-		return StringUtils.leftPad(gRoute.route_short_name, 3); // route short name length = 3
-	}
-	
 	@Override
 	public String getStopCode(GStop gStop) {
 		return null; // no stop code
