@@ -83,7 +83,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public void setTripHeadsign(MTrip mTrip, GTrip gTrip) {
 		int directionId = Integer.valueOf(gTrip.direction_id);
-		String stationName = cleanTripHeasign(gTrip.trip_headsign);
+		String stationName = cleanTripHeadsign(gTrip.trip_headsign);
 		mTrip.setHeadsignString(stationName, directionId);
 	}
 
@@ -92,7 +92,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern PLACE_CHAR_SECTEURS = Pattern.compile("(secteurs )", Pattern.CASE_INSENSITIVE);
 
 	@Override
-	public String cleanTripHeasign(String result) {
+	public String cleanTripHeadsign(String result) {
 		result = MSpec.CLEAN_SLASHES.matcher(result).replaceAll(MSpec.CLEAN_SLASHES_REPLACEMENT);
 		result = Utils.replaceAll(result, MSpec.SPACE_CHARS, MSpec.SPACE);
 		result = PLACE_CHAR_TERMINUS.matcher(result).replaceAll(MSpec.SPACE);
