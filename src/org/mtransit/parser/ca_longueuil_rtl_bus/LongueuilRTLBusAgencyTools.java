@@ -5,12 +5,15 @@ import java.util.regex.Pattern;
 
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.Utils;
+import org.mtransit.parser.gtfs.data.GCalendar;
+import org.mtransit.parser.gtfs.data.GCalendarDate;
 import org.mtransit.parser.gtfs.data.GRoute;
 import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.gtfs.data.GTrip;
 import org.mtransit.parser.mt.data.MSpec;
 import org.mtransit.parser.mt.data.MTrip;
 
+// http://www.rtl-longueuil.qc.ca/en-CA/open-data/
 // http://www.rtl-longueuil.qc.ca/en-CA/open-data/gtfs-files/
 // http://www.rtl-longueuil.qc.ca/transit/latestfeed/RTL.zip
 public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
@@ -35,6 +38,32 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		System.out.printf("Generating RTL bus data... DONE in %s.\n", Utils.getPrettyDuration(System.currentTimeMillis() - start));
 	}
 
+	public static final String SERVICE_ID_FILTER = null;
+
+	@Override
+	public boolean excludeTrip(GTrip gTrip) {
+		if (SERVICE_ID_FILTER != null && !gTrip.service_id.contains(SERVICE_ID_FILTER)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean excludeCalendarDate(GCalendarDate gCalendarDates) {
+		if (SERVICE_ID_FILTER != null && !gCalendarDates.service_id.contains(SERVICE_ID_FILTER)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean excludeCalendar(GCalendar gCalendar) {
+		if (SERVICE_ID_FILTER != null && !gCalendar.service_id.contains(SERVICE_ID_FILTER)) {
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public boolean excludeRoute(GRoute gRoute) {
 		if (ROUTE_TYPE_FILTER != null && !gRoute.route_type.equals(ROUTE_TYPE_FILTER)) {
@@ -54,7 +83,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public void setTripHeadsign(MTrip mTrip, GTrip gTrip) {
 		int directionId = Integer.valueOf(gTrip.direction_id);
-		String stationName = cleanTripHeading(gTrip.trip_headsign);
+		String stationName = cleanTripHeasign(gTrip.trip_headsign);
 		mTrip.setHeadsignString(stationName, directionId);
 	}
 
@@ -62,7 +91,8 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern PLACE_CHAR_SECTEUR = Pattern.compile("(secteur )", Pattern.CASE_INSENSITIVE);
 	private static final Pattern PLACE_CHAR_SECTEURS = Pattern.compile("(secteurs )", Pattern.CASE_INSENSITIVE);
 
-	private String cleanTripHeading(String result) {
+	@Override
+	public String cleanTripHeasign(String result) {
 		result = MSpec.CLEAN_SLASHES.matcher(result).replaceAll(MSpec.CLEAN_SLASHES_REPLACEMENT);
 		result = Utils.replaceAll(result, MSpec.SPACE_CHARS, MSpec.SPACE);
 		result = PLACE_CHAR_TERMINUS.matcher(result).replaceAll(MSpec.SPACE);
