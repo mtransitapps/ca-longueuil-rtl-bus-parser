@@ -24,7 +24,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		if (args == null || args.length == 0) {
 			args = new String[3];
 			args[0] = "input/gtfs.zip";
-			args[1] = "../ca-longueuil-rtl-bus-android/res/raw/";
+			args[1] = "../../mtransitapps/ca-longueuil-rtl-bus-android/res/raw/";
 			args[2] = ""; // files-prefix
 		}
 		new LongueuilRTLBusAgencyTools().start(args);
@@ -69,10 +69,20 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		if (ROUTE_TYPE_FILTER != null && !gRoute.route_type.equals(ROUTE_TYPE_FILTER)) {
 			return true;
 		}
-		if (gRoute.route_short_name.startsWith("T")) { // exclude Taxi for now
-			return true;
-		}
 		return super.excludeRoute(gRoute);
+	}
+
+	private static final Pattern CLEAN_TAXI = Pattern.compile("(taxi)[\\s]*\\-[\\s]*", Pattern.CASE_INSENSITIVE);
+	private static final String CLEAN_TAXI_REPLACEMENT = "Taxi ";
+
+	@Override
+	public String getRouteLongName(GRoute gRoute) {
+		return cleanRouteLongName(gRoute.route_long_name);
+	}
+
+	private String cleanRouteLongName(String routeLongName) {
+		routeLongName = CLEAN_TAXI.matcher(routeLongName).replaceAll(CLEAN_TAXI_REPLACEMENT);
+		return MSpec.cleanLabelFR(routeLongName);
 	}
 
 	@Override
