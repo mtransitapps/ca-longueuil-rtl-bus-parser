@@ -10,6 +10,7 @@ import org.mtransit.parser.gtfs.data.GCalendarDate;
 import org.mtransit.parser.gtfs.data.GRoute;
 import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.gtfs.data.GTrip;
+import org.mtransit.parser.mt.data.MRoute;
 import org.mtransit.parser.mt.data.MSpec;
 import org.mtransit.parser.mt.data.MTrip;
 
@@ -91,7 +92,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	}
 	
 	@Override
-	public void setTripHeadsign(MTrip mTrip, GTrip gTrip) {
+	public void setTripHeadsign(MRoute route, MTrip mTrip, GTrip gTrip) {
 		int directionId = Integer.valueOf(gTrip.direction_id);
 		String stationName = cleanTripHeadsign(gTrip.trip_headsign);
 		mTrip.setHeadsignString(stationName, directionId);
