@@ -1,5 +1,6 @@
 package org.mtransit.parser.ca_longueuil_rtl_bus;
 
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -31,38 +32,39 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		new LongueuilRTLBusAgencyTools().start(args);
 	}
 
+	private HashSet<String> serviceIds;
+
 	@Override
 	public void start(String[] args) {
 		System.out.printf("Generating RTL bus data...\n");
 		long start = System.currentTimeMillis();
+		this.serviceIds = extractUsefulServiceIds(args, this);
 		super.start(args);
 		System.out.printf("Generating RTL bus data... DONE in %s.\n", Utils.getPrettyDuration(System.currentTimeMillis() - start));
 	}
 
-	public static final String SERVICE_ID_FILTER = null;
-
 	@Override
-	public boolean excludeTrip(GTrip gTrip) {
-		if (SERVICE_ID_FILTER != null && !gTrip.service_id.contains(SERVICE_ID_FILTER)) {
-			return true;
+	public boolean excludeCalendar(GCalendar gCalendar) {
+		if (this.serviceIds != null) {
+			return excludeUselessCalendar(gCalendar, this.serviceIds);
 		}
-		return false;
+		return super.excludeCalendar(gCalendar);
 	}
 
 	@Override
 	public boolean excludeCalendarDate(GCalendarDate gCalendarDates) {
-		if (SERVICE_ID_FILTER != null && !gCalendarDates.service_id.contains(SERVICE_ID_FILTER)) {
-			return true;
+		if (this.serviceIds != null) {
+			return excludeUselessCalendarDate(gCalendarDates, this.serviceIds);
 		}
-		return false;
+		return super.excludeCalendarDate(gCalendarDates);
 	}
 
 	@Override
-	public boolean excludeCalendar(GCalendar gCalendar) {
-		if (SERVICE_ID_FILTER != null && !gCalendar.service_id.contains(SERVICE_ID_FILTER)) {
-			return true;
+	public boolean excludeTrip(GTrip gTrip) {
+		if (this.serviceIds != null) {
+			return excludeUselessTrip(gTrip, serviceIds);
 		}
-		return false;
+		return super.excludeTrip(gTrip);
 	}
 
 	@Override
