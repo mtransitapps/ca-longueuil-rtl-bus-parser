@@ -75,6 +75,13 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		return super.excludeRoute(gRoute);
 	}
 
+	private static final String AGENCY_COLOR = "A32638";
+
+	@Override
+	public String getAgencyColor() {
+		return AGENCY_COLOR;
+	}
+
 	private static final Pattern CLEAN_TAXI = Pattern.compile("(taxi)[\\s]*\\-[\\s]*", Pattern.CASE_INSENSITIVE);
 	private static final String CLEAN_TAXI_REPLACEMENT = "Taxi ";
 
