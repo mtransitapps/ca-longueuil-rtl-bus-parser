@@ -100,10 +100,55 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		return null; // no stop code
 	}
 	
+	private static final String ROUTE_25_TRIP_0_NAME = "Parcs Industriels";
+	private static final String ROUTE_30_TRIP_0_NAME = "P-V Brossard";
+	private static final String ROUTE_37_TRIP_0_NAME = "Simard";
+	private static final String ROUTE_59_TRIP_0_NAME = "Gareau";
+	private static final String ROUTE_82_TRIP_0_NAME = "Marie-Victorin";
+	private static final String ROUTE_106_TRIP_0_NAME = "B Brossard";
+	private static final String ROUTE_142_TRIP_0_NAME = "Pacific";
+	private static final String ROUTE_142_TRIP_1_NAME = "Centre-Ville";
+	private static final String ROUTE_822_TRIP_1_NAME = "Parc Industriel G-Leclerc";
+
 	@Override
-	public void setTripHeadsign(MRoute route, MTrip mTrip, GTrip gTrip) {
+	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip) {
 		int directionId = Integer.valueOf(gTrip.direction_id);
 		String stationName = cleanTripHeadsign(gTrip.trip_headsign);
+		if (mRoute.id == 25L) {
+			if (directionId == 0) {
+				stationName = ROUTE_25_TRIP_0_NAME;
+			}
+		} else if (mRoute.id == 30L) {
+			if (directionId == 0) {
+				stationName = ROUTE_30_TRIP_0_NAME;
+			}
+		} else if (mRoute.id == 37L) {
+			if (directionId == 0) {
+				stationName = ROUTE_37_TRIP_0_NAME;
+			}
+		} else if (mRoute.id == 59L) {
+			if (directionId == 0) {
+				stationName = ROUTE_59_TRIP_0_NAME;
+			}
+		} else if (mRoute.id == 82L) {
+			if (directionId == 0) {
+				stationName = ROUTE_82_TRIP_0_NAME;
+			}
+		} else if (mRoute.id == 106L) {
+			if (directionId == 0) {
+				stationName = ROUTE_106_TRIP_0_NAME;
+			}
+		} else if (mRoute.id == 142L) {
+			if (directionId == 0) {
+				stationName = ROUTE_142_TRIP_0_NAME;
+			} else if (directionId == 1) {
+				stationName = ROUTE_142_TRIP_1_NAME;
+			}
+		} else if (mRoute.id == 822L) {
+			if (directionId == 1) {
+				stationName = ROUTE_822_TRIP_1_NAME;
+			}
+		}
 		mTrip.setHeadsignString(stationName, directionId);
 	}
 
