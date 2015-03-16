@@ -108,7 +108,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip) {
-		int directionId = Integer.valueOf(gTrip.direction_id);
+		int directionId = gTrip.direction_id;
 		String stationName = cleanTripHeadsign(gTrip.trip_headsign);
 		if (mRoute.id == 25L) {
 			if (directionId == 0) {
