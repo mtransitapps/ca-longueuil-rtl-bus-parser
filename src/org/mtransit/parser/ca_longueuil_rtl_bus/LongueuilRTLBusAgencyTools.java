@@ -9,6 +9,7 @@ import org.mtransit.parser.Utils;
 import org.mtransit.parser.gtfs.data.GCalendar;
 import org.mtransit.parser.gtfs.data.GCalendarDate;
 import org.mtransit.parser.gtfs.data.GRoute;
+import org.mtransit.parser.gtfs.data.GSpec;
 import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.gtfs.data.GTrip;
 import org.mtransit.parser.mt.data.MAgency;
@@ -107,45 +108,44 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	private static final String ROUTE_822_TRIP_1_NAME = "Parc Industriel G-Leclerc";
 
 	@Override
-	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip) {
-		int directionId = gTrip.direction_id;
+	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip, GSpec gtfs) {
 		String stationName = cleanTripHeadsign(gTrip.trip_headsign);
 		if (mRoute.id == 25L) {
-			if (directionId == 0) {
+			if (gTrip.direction_id == 0) {
 				stationName = ROUTE_25_TRIP_0_NAME;
 			}
 		} else if (mRoute.id == 30L) {
-			if (directionId == 0) {
+			if (gTrip.direction_id == 0) {
 				stationName = ROUTE_30_TRIP_0_NAME;
 			}
 		} else if (mRoute.id == 37L) {
-			if (directionId == 0) {
+			if (gTrip.direction_id == 0) {
 				stationName = ROUTE_37_TRIP_0_NAME;
 			}
 		} else if (mRoute.id == 59L) {
-			if (directionId == 0) {
+			if (gTrip.direction_id == 0) {
 				stationName = ROUTE_59_TRIP_0_NAME;
 			}
 		} else if (mRoute.id == 82L) {
-			if (directionId == 0) {
+			if (gTrip.direction_id == 0) {
 				stationName = ROUTE_82_TRIP_0_NAME;
 			}
 		} else if (mRoute.id == 106L) {
-			if (directionId == 0) {
+			if (gTrip.direction_id == 0) {
 				stationName = ROUTE_106_TRIP_0_NAME;
 			}
 		} else if (mRoute.id == 142L) {
-			if (directionId == 0) {
+			if (gTrip.direction_id == 0) {
 				stationName = ROUTE_142_TRIP_0_NAME;
-			} else if (directionId == 1) {
+			} else if (gTrip.direction_id == 1) {
 				stationName = ROUTE_142_TRIP_1_NAME;
 			}
 		} else if (mRoute.id == 822L) {
-			if (directionId == 1) {
+			if (gTrip.direction_id == 1) {
 				stationName = ROUTE_822_TRIP_1_NAME;
 			}
 		}
-		mTrip.setHeadsignString(stationName, directionId);
+		mTrip.setHeadsignString(stationName, gTrip.direction_id);
 	}
 
 	private static final Pattern PLACE_CHAR_TERMINUS = Pattern.compile("(terminus )", Pattern.CASE_INSENSITIVE);
