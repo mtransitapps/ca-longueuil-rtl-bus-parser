@@ -171,6 +171,6 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		gStopName = gStopName.toLowerCase(Locale.ENGLISH); // SOURCE FILE ALL CAPS !!!
 		gStopName = MSpec.CONVERT_ET_TO_SLASHES.matcher(gStopName).replaceAll(MSpec.CONVERT_ET_TO_SLASHES_REPLACEMENT);
 		gStopName = RTL_LONG.matcher(gStopName).replaceAll(RTL_SHORT);
-		return super.cleanStopNameFR(gStopName);
+		return MSpec.cleanLabelFR(gStopName);
 	}
 }
