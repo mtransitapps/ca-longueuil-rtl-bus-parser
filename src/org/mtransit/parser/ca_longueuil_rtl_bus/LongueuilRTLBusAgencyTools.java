@@ -14,7 +14,7 @@ import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.gtfs.data.GTrip;
 import org.mtransit.parser.mt.data.MAgency;
 import org.mtransit.parser.mt.data.MRoute;
-import org.mtransit.parser.mt.data.MSpec;
+import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.mt.data.MTrip;
 
 // http://www.rtl-longueuil.qc.ca/en-CA/open-data/
@@ -36,11 +36,11 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public void start(String[] args) {
-		System.out.printf("Generating RTL bus data...\n");
+		System.out.printf("\nGenerating RTL bus data...\n");
 		long start = System.currentTimeMillis();
 		this.serviceIds = extractUsefulServiceIds(args, this);
 		super.start(args);
-		System.out.printf("Generating RTL bus data... DONE in %s.\n", Utils.getPrettyDuration(System.currentTimeMillis() - start));
+		System.out.printf("\nGenerating RTL bus data... DONE in %s.\n", Utils.getPrettyDuration(System.currentTimeMillis() - start));
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	private String cleanRouteLongName(String routeLongName) {
 		routeLongName = CLEAN_TAXI.matcher(routeLongName).replaceAll(CLEAN_TAXI_REPLACEMENT);
-		return MSpec.cleanLabelFR(routeLongName);
+		return CleanUtils.cleanLabelFR(routeLongName);
 	}
 
 	@Override
@@ -154,13 +154,13 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String cleanTripHeadsign(String result) {
-		result = MSpec.CLEAN_SLASHES.matcher(result).replaceAll(MSpec.CLEAN_SLASHES_REPLACEMENT);
-		result = Utils.replaceAll(result, MSpec.SPACE_CHARS, MSpec.SPACE);
-		result = PLACE_CHAR_TERMINUS.matcher(result).replaceAll(MSpec.SPACE);
-		result = PLACE_CHAR_SECTEUR.matcher(result).replaceAll(MSpec.SPACE);
-		result = PLACE_CHAR_SECTEURS.matcher(result).replaceAll(MSpec.SPACE);
-		result = Utils.replaceAll(result, MSpec.SPACE_ST, MSpec.SPACE);
-		return MSpec.cleanLabelFR(result);
+		result = CleanUtils.CLEAN_SLASHES.matcher(result).replaceAll(CleanUtils.CLEAN_SLASHES_REPLACEMENT);
+		result = Utils.replaceAll(result, CleanUtils.SPACE_CHARS, CleanUtils.SPACE);
+		result = PLACE_CHAR_TERMINUS.matcher(result).replaceAll(CleanUtils.SPACE);
+		result = PLACE_CHAR_SECTEUR.matcher(result).replaceAll(CleanUtils.SPACE);
+		result = PLACE_CHAR_SECTEURS.matcher(result).replaceAll(CleanUtils.SPACE);
+		result = Utils.replaceAll(result, CleanUtils.SPACE_ST, CleanUtils.SPACE);
+		return CleanUtils.cleanLabelFR(result);
 	}
 
 	public static final Pattern RTL_LONG = Pattern.compile("(du reseau de transport de longueuil)", Pattern.CASE_INSENSITIVE);
@@ -169,8 +169,9 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public String cleanStopName(String gStopName) {
 		gStopName = gStopName.toLowerCase(Locale.ENGLISH); // SOURCE FILE ALL CAPS !!!
-		gStopName = MSpec.CONVERT_ET_TO_SLASHES.matcher(gStopName).replaceAll(MSpec.CONVERT_ET_TO_SLASHES_REPLACEMENT);
+		gStopName = CleanUtils.CONVERT_ET_TO_SLASHES.matcher(gStopName).replaceAll(CleanUtils.CONVERT_ET_TO_SLASHES_REPLACEMENT);
 		gStopName = RTL_LONG.matcher(gStopName).replaceAll(RTL_SHORT);
-		return MSpec.cleanLabelFR(gStopName);
+		gStopName = CleanUtils.cleanStreetTypesFRCA(gStopName);
+		return CleanUtils.cleanLabelFR(gStopName);
 	}
 }
