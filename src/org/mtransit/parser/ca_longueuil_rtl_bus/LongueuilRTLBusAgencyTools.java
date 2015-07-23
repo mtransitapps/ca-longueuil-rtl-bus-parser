@@ -84,7 +84,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getRouteLongName(GRoute gRoute) {
-		return cleanRouteLongName(gRoute.route_long_name);
+		return cleanRouteLongName(gRoute.getRouteLongName());
 	}
 
 	private String cleanRouteLongName(String routeLongName) {
@@ -109,43 +109,43 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip, GSpec gtfs) {
-		String stationName = cleanTripHeadsign(gTrip.trip_headsign);
+		String stationName = cleanTripHeadsign(gTrip.getTripHeadsign());
 		if (mRoute.id == 25L) {
-			if (gTrip.direction_id == 0) {
+			if (gTrip.getDirectionId() == 0) {
 				stationName = ROUTE_25_TRIP_0_NAME;
 			}
 		} else if (mRoute.id == 30L) {
-			if (gTrip.direction_id == 0) {
+			if (gTrip.getDirectionId() == 0) {
 				stationName = ROUTE_30_TRIP_0_NAME;
 			}
 		} else if (mRoute.id == 37L) {
-			if (gTrip.direction_id == 0) {
+			if (gTrip.getDirectionId() == 0) {
 				stationName = ROUTE_37_TRIP_0_NAME;
 			}
 		} else if (mRoute.id == 59L) {
-			if (gTrip.direction_id == 0) {
+			if (gTrip.getDirectionId() == 0) {
 				stationName = ROUTE_59_TRIP_0_NAME;
 			}
 		} else if (mRoute.id == 82L) {
-			if (gTrip.direction_id == 0) {
+			if (gTrip.getDirectionId() == 0) {
 				stationName = ROUTE_82_TRIP_0_NAME;
 			}
 		} else if (mRoute.id == 106L) {
-			if (gTrip.direction_id == 0) {
+			if (gTrip.getDirectionId() == 0) {
 				stationName = ROUTE_106_TRIP_0_NAME;
 			}
 		} else if (mRoute.id == 142L) {
-			if (gTrip.direction_id == 0) {
+			if (gTrip.getDirectionId() == 0) {
 				stationName = ROUTE_142_TRIP_0_NAME;
-			} else if (gTrip.direction_id == 1) {
+			} else if (gTrip.getDirectionId() == 1) {
 				stationName = ROUTE_142_TRIP_1_NAME;
 			}
 		} else if (mRoute.id == 822L) {
-			if (gTrip.direction_id == 1) {
+			if (gTrip.getDirectionId() == 1) {
 				stationName = ROUTE_822_TRIP_1_NAME;
 			}
 		}
-		mTrip.setHeadsignString(stationName, gTrip.direction_id);
+		mTrip.setHeadsignString(stationName, gTrip.getDirectionId());
 	}
 
 	private static final Pattern PLACE_CHAR_TERMINUS = Pattern.compile("(terminus )", Pattern.CASE_INSENSITIVE);
@@ -153,14 +153,14 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern PLACE_CHAR_SECTEURS = Pattern.compile("(secteurs )", Pattern.CASE_INSENSITIVE);
 
 	@Override
-	public String cleanTripHeadsign(String result) {
-		result = CleanUtils.CLEAN_SLASHES.matcher(result).replaceAll(CleanUtils.CLEAN_SLASHES_REPLACEMENT);
-		result = Utils.replaceAll(result, CleanUtils.SPACE_CHARS, CleanUtils.SPACE);
-		result = PLACE_CHAR_TERMINUS.matcher(result).replaceAll(CleanUtils.SPACE);
-		result = PLACE_CHAR_SECTEUR.matcher(result).replaceAll(CleanUtils.SPACE);
-		result = PLACE_CHAR_SECTEURS.matcher(result).replaceAll(CleanUtils.SPACE);
-		result = Utils.replaceAll(result, CleanUtils.SPACE_ST, CleanUtils.SPACE);
-		return CleanUtils.cleanLabelFR(result);
+	public String cleanTripHeadsign(String tripHeadsign) {
+		tripHeadsign = CleanUtils.cleanSlashes(tripHeadsign);
+		tripHeadsign = Utils.replaceAll(tripHeadsign, CleanUtils.SPACE_CHARS, CleanUtils.SPACE);
+		tripHeadsign = PLACE_CHAR_TERMINUS.matcher(tripHeadsign).replaceAll(CleanUtils.SPACE);
+		tripHeadsign = PLACE_CHAR_SECTEUR.matcher(tripHeadsign).replaceAll(CleanUtils.SPACE);
+		tripHeadsign = PLACE_CHAR_SECTEURS.matcher(tripHeadsign).replaceAll(CleanUtils.SPACE);
+		tripHeadsign = Utils.replaceAll(tripHeadsign, CleanUtils.SPACE_ST, CleanUtils.SPACE);
+		return CleanUtils.cleanLabelFR(tripHeadsign);
 	}
 
 	public static final Pattern RTL_LONG = Pattern.compile("(du reseau de transport de longueuil)", Pattern.CASE_INSENSITIVE);
