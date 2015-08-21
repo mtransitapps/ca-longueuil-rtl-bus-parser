@@ -160,6 +160,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		tripHeadsign = PLACE_CHAR_SECTEUR.matcher(tripHeadsign).replaceAll(CleanUtils.SPACE);
 		tripHeadsign = PLACE_CHAR_SECTEURS.matcher(tripHeadsign).replaceAll(CleanUtils.SPACE);
 		tripHeadsign = Utils.replaceAll(tripHeadsign, CleanUtils.SPACE_ST, CleanUtils.SPACE);
+		tripHeadsign = CleanUtils.cleanStreetTypesFRCA(tripHeadsign);
 		return CleanUtils.cleanLabelFR(tripHeadsign);
 	}
 
