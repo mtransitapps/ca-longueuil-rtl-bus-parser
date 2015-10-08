@@ -96,69 +96,105 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	public String getStopCode(GStop gStop) {
 		return null; // no stop code
 	}
-	
-	private static final String ROUTE_25_TRIP_0_NAME = "Parcs Industriels";
-	private static final String ROUTE_30_TRIP_0_NAME = "P-V Brossard";
-	private static final String ROUTE_37_TRIP_0_NAME = "Simard";
-	private static final String ROUTE_59_TRIP_0_NAME = "Gareau";
-	private static final String ROUTE_82_TRIP_0_NAME = "Marie-Victorin";
-	private static final String ROUTE_106_TRIP_0_NAME = "B Brossard";
-	private static final String ROUTE_142_TRIP_0_NAME = "Pacific";
-	private static final String ROUTE_142_TRIP_1_NAME = "Centre-Ville";
-	private static final String ROUTE_822_TRIP_1_NAME = "Parc Industriel G-Leclerc";
+
+	private static final String INDUSTRIEL_SHORT = "Ind.";
+	private static final String INDUSTRIELS_SHORT = "Ind.";
+	private static final String PARCS_INDUSTRIELS = "Parcs " + INDUSTRIELS_SHORT;
+	private static final String BROSSARD = "Brossard";
+	private static final String PV_BROSSARD = "P-V " + BROSSARD;
+	private static final String SIMARD = "Simard";
+	private static final String GAREAU = "Gareau";
+	private static final String MARIE_VICTORIN = "Marie-Victorin";
+	private static final String ILE_DES_SOEURS = "Ile-Des-Soeurs";
+	private static final String B_BROSSARD = "B " + BROSSARD;
+	private static final String PACIFIC = "Pacific";
+	private static final String CENTRE_VILLE = "Centre-Ville";
+	private static final String PARC_INDUSTRIEL_G_LECLERC = "Parc " + INDUSTRIEL_SHORT + " G-Leclerc";
+	private static final String ARMAND_FRAPPIER = "Armand-Frappier";
 
 	@Override
 	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip, GSpec gtfs) {
-		String stationName = cleanTripHeadsign(gTrip.getTripHeadsign());
-		if (mRoute.id == 25L) {
-			if (gTrip.getDirectionId() == 0) {
-				stationName = ROUTE_25_TRIP_0_NAME;
-			}
-		} else if (mRoute.id == 30L) {
-			if (gTrip.getDirectionId() == 0) {
-				stationName = ROUTE_30_TRIP_0_NAME;
-			}
-		} else if (mRoute.id == 37L) {
-			if (gTrip.getDirectionId() == 0) {
-				stationName = ROUTE_37_TRIP_0_NAME;
-			}
-		} else if (mRoute.id == 59L) {
-			if (gTrip.getDirectionId() == 0) {
-				stationName = ROUTE_59_TRIP_0_NAME;
-			}
-		} else if (mRoute.id == 82L) {
-			if (gTrip.getDirectionId() == 0) {
-				stationName = ROUTE_82_TRIP_0_NAME;
-			}
-		} else if (mRoute.id == 106L) {
-			if (gTrip.getDirectionId() == 0) {
-				stationName = ROUTE_106_TRIP_0_NAME;
-			}
-		} else if (mRoute.id == 142L) {
-			if (gTrip.getDirectionId() == 0) {
-				stationName = ROUTE_142_TRIP_0_NAME;
-			} else if (gTrip.getDirectionId() == 1) {
-				stationName = ROUTE_142_TRIP_1_NAME;
-			}
-		} else if (mRoute.id == 822L) {
-			if (gTrip.getDirectionId() == 1) {
-				stationName = ROUTE_822_TRIP_1_NAME;
-			}
-		}
-		mTrip.setHeadsignString(stationName, gTrip.getDirectionId());
+		mTrip.setHeadsignString(cleanTripHeadsign(gTrip.getTripHeadsign()), gTrip.getDirectionId());
 	}
 
-	private static final Pattern PLACE_CHAR_TERMINUS = Pattern.compile("(terminus )", Pattern.CASE_INSENSITIVE);
-	private static final Pattern PLACE_CHAR_SECTEUR = Pattern.compile("(secteur )", Pattern.CASE_INSENSITIVE);
-	private static final Pattern PLACE_CHAR_SECTEURS = Pattern.compile("(secteurs )", Pattern.CASE_INSENSITIVE);
+	@Override
+	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
+		if (mTrip.getRouteId() == 25l) {
+			if (mTrip.getHeadsignId() == 0) {
+				mTrip.setHeadsignString(PARCS_INDUSTRIELS, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 30l) {
+			if (mTrip.getHeadsignId() == 0) {
+				mTrip.setHeadsignString(PV_BROSSARD, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 37l) {
+			if (mTrip.getHeadsignId() == 0) {
+				mTrip.setHeadsignString(SIMARD, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 59l) {
+			if (mTrip.getHeadsignId() == 0) {
+				mTrip.setHeadsignString(GAREAU, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 82l) {
+			if (mTrip.getHeadsignId() == 0) {
+				mTrip.setHeadsignString(MARIE_VICTORIN, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 100l) {
+			if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(ILE_DES_SOEURS, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 106l) {
+			if (mTrip.getHeadsignId() == 0) {
+				mTrip.setHeadsignString(B_BROSSARD, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 142l) {
+			if (mTrip.getHeadsignId() == 0) {
+				mTrip.setHeadsignString(PACIFIC, mTrip.getHeadsignId());
+				return true;
+			} else if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 821l) {
+			if (mTrip.getHeadsignId() == 0) {
+				mTrip.setHeadsignString(ARMAND_FRAPPIER, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 822l) {
+			if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(PARC_INDUSTRIEL_G_LECLERC, mTrip.getHeadsignId());
+				return true;
+			}
+		}
+		return super.mergeHeadsign(mTrip, mTripToMerge);
+	}
+
+	private static final Pattern TERMINUS = Pattern.compile("((^|\\W){1}(terminus)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final Pattern SECTEUR = Pattern.compile("((^|\\W){1}(secteur)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final Pattern SECTEURS = Pattern.compile("((^|\\W){1}(secteurs)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+
+	private static final Pattern INDUSTRIEL = Pattern.compile("((^|\\W){1}(industriel)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final String INDUSTRIEL_REPLACEMENT = "$2" + INDUSTRIEL_SHORT + "$4";
+
+	private static final Pattern INDUSTRIELS = Pattern.compile("((^|\\W){1}(industriels)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final String INDUSTRIELS_REPLACEMENT = "$2" + INDUSTRIELS_SHORT + "$4";
 
 	@Override
 	public String cleanTripHeadsign(String tripHeadsign) {
 		tripHeadsign = CleanUtils.cleanSlashes(tripHeadsign);
 		tripHeadsign = Utils.replaceAll(tripHeadsign, CleanUtils.SPACE_CHARS, CleanUtils.SPACE);
-		tripHeadsign = PLACE_CHAR_TERMINUS.matcher(tripHeadsign).replaceAll(CleanUtils.SPACE);
-		tripHeadsign = PLACE_CHAR_SECTEUR.matcher(tripHeadsign).replaceAll(CleanUtils.SPACE);
-		tripHeadsign = PLACE_CHAR_SECTEURS.matcher(tripHeadsign).replaceAll(CleanUtils.SPACE);
+		tripHeadsign = TERMINUS.matcher(tripHeadsign).replaceAll(CleanUtils.SPACE);
+		tripHeadsign = SECTEUR.matcher(tripHeadsign).replaceAll(CleanUtils.SPACE);
+		tripHeadsign = SECTEURS.matcher(tripHeadsign).replaceAll(CleanUtils.SPACE);
+		tripHeadsign = INDUSTRIEL.matcher(tripHeadsign).replaceAll(INDUSTRIEL_REPLACEMENT);
+		tripHeadsign = INDUSTRIELS.matcher(tripHeadsign).replaceAll(INDUSTRIELS_REPLACEMENT);
 		tripHeadsign = Utils.replaceAll(tripHeadsign, CleanUtils.SPACE_ST, CleanUtils.SPACE);
 		tripHeadsign = CleanUtils.cleanStreetTypesFRCA(tripHeadsign);
 		return CleanUtils.cleanLabelFR(tripHeadsign);
@@ -170,7 +206,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public String cleanStopName(String gStopName) {
 		gStopName = gStopName.toLowerCase(Locale.ENGLISH); // SOURCE FILE ALL CAPS !!!
-		gStopName = CleanUtils.CONVERT_ET_TO_SLASHES.matcher(gStopName).replaceAll(CleanUtils.CONVERT_ET_TO_SLASHES_REPLACEMENT);
+		gStopName = CleanUtils.CLEAN_ET.matcher(gStopName).replaceAll(CleanUtils.CLEAN_ET_REPLACEMENT);
 		gStopName = RTL_LONG.matcher(gStopName).replaceAll(RTL_SHORT);
 		gStopName = CleanUtils.cleanStreetTypesFRCA(gStopName);
 		return CleanUtils.cleanLabelFR(gStopName);
