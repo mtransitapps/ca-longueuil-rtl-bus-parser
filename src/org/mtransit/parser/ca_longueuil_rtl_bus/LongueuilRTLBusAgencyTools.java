@@ -107,6 +107,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	private static final String MARIE_VICTORIN = "Marie-Victorin";
 	private static final String ILE_DES_SOEURS = "Ile-Des-Soeurs";
 	private static final String B_BROSSARD = "B " + BROSSARD;
+	private static final String M_N_O_BROSSARD = "M-N-O " + BROSSARD;
 	private static final String PACIFIC = "Pacific";
 	private static final String CENTRE_VILLE = "Centre-Ville";
 	private static final String PARC_INDUSTRIEL_G_LECLERC = "Parc " + INDUSTRIEL_SHORT + " G-Leclerc";
@@ -119,7 +120,17 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
-		if (mTrip.getRouteId() == 25l) {
+		if (mTrip.getRouteId() == 5l) {
+			if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 15l) {
+			if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 25l) {
 			if (mTrip.getHeadsignId() == 0) {
 				mTrip.setHeadsignString(PARCS_INDUSTRIELS, mTrip.getHeadsignId());
 				return true;
@@ -129,14 +140,62 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignString(PV_BROSSARD, mTrip.getHeadsignId());
 				return true;
 			}
+		} else if (mTrip.getRouteId() == 32l) {
+			if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 33l) {
+			if (mTrip.getHeadsignId() == 0) {
+				mTrip.setHeadsignString(M_N_O_BROSSARD, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 35l) {
+			if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
+				return true;
+			}
 		} else if (mTrip.getRouteId() == 37l) {
 			if (mTrip.getHeadsignId() == 0) {
 				mTrip.setHeadsignString(SIMARD, mTrip.getHeadsignId());
 				return true;
 			}
+		} else if (mTrip.getRouteId() == 42l) {
+			if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 44l) {
+			if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 47l) {
+			if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 49l) {
+			if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 50l) {
+			if (mTrip.getHeadsignId() == 0) {
+				mTrip.setHeadsignString("Prince-Charles", mTrip.getHeadsignId());
+				return true;
+			} else if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
+				return true;
+			}
 		} else if (mTrip.getRouteId() == 59l) {
 			if (mTrip.getHeadsignId() == 0) {
 				mTrip.setHeadsignString(GAREAU, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 60l) {
+			if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 82l) {
@@ -152,6 +211,11 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		} else if (mTrip.getRouteId() == 106l) {
 			if (mTrip.getHeadsignId() == 0) {
 				mTrip.setHeadsignString(B_BROSSARD, mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 132l) {
+			if (mTrip.getHeadsignId() == 1) {
+				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 142l) {
@@ -173,7 +237,9 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 				return true;
 			}
 		}
-		return super.mergeHeadsign(mTrip, mTripToMerge);
+		System.out.printf("\nUnexpected trips to merge %s & %s\n", mTrip, mTripToMerge);
+		System.exit(-1);
+		return false;
 	}
 
 	private static final Pattern TERMINUS = Pattern.compile("((^|\\W){1}(terminus)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
