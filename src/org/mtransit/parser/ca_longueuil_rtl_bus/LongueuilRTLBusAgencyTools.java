@@ -1,6 +1,8 @@
 package org.mtransit.parser.ca_longueuil_rtl_bus;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -105,13 +107,17 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	private static final String SIMARD = "Simard";
 	private static final String GAREAU = "Gareau";
 	private static final String MARIE_VICTORIN = "Marie-Victorin";
-	private static final String ILE_DES_SOEURS = "Ile-Des-Soeurs";
 	private static final String B_BROSSARD = "B " + BROSSARD;
 	private static final String M_N_O_BROSSARD = "M-N-O " + BROSSARD;
 	private static final String PACIFIC = "Pacific";
 	private static final String CENTRE_VILLE = "Centre-Ville";
 	private static final String PARC_INDUSTRIEL_G_LECLERC = "Parc " + INDUSTRIEL_SHORT + " G-Leclerc";
 	private static final String ARMAND_FRAPPIER = "Armand-Frappier";
+	private static final String PANAMA = "Panama";
+	private static final String LONGUEUIL = "Longueuil";
+	private static final String COUSINEAU = "Cousineau";
+	private static final String GRANDE_ALLEE = "Grande Allée";
+	private static final String GAETAN_BOUCHER = "Gaétan-Boucher";
 
 	@Override
 	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip, GSpec gtfs) {
@@ -120,119 +126,178 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
-		if (mTrip.getRouteId() == 5l) {
-			if (mTrip.getHeadsignId() == 1) {
+		List<String> headsignsValues = Arrays.asList(mTrip.getHeadsignValue(), mTripToMerge.getHeadsignValue());
+		if (mTrip.getRouteId() == 5L) {
+			if (Arrays.asList( //
+					PANAMA, //
+					CENTRE_VILLE //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 15l) {
-			if (mTrip.getHeadsignId() == 1) {
+		} else if (mTrip.getRouteId() == 15L) {
+			if (Arrays.asList( //
+					PANAMA, //
+					CENTRE_VILLE //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 25l) {
-			if (mTrip.getHeadsignId() == 0) {
+		} else if (mTrip.getRouteId() == 25L) {
+			if (Arrays.asList( //
+					LONGUEUIL, //
+					PARCS_INDUSTRIELS //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(PARCS_INDUSTRIELS, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 30l) {
-			if (mTrip.getHeadsignId() == 0) {
+		} else if (mTrip.getRouteId() == 30L) {
+			if (Arrays.asList( //
+					CENTRE_VILLE, //
+					PV_BROSSARD //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(PV_BROSSARD, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 32l) {
-			if (mTrip.getHeadsignId() == 1) {
+		} else if (mTrip.getRouteId() == 32L) {
+			if (Arrays.asList( //
+					PANAMA, //
+					CENTRE_VILLE //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 33l) {
-			if (mTrip.getHeadsignId() == 0) {
+		} else if (mTrip.getRouteId() == 33L) {
+			if (Arrays.asList( //
+					CENTRE_VILLE, //
+					M_N_O_BROSSARD //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(M_N_O_BROSSARD, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 35l) {
-			if (mTrip.getHeadsignId() == 1) {
+		} else if (mTrip.getRouteId() == 35L) {
+			if (Arrays.asList( //
+					PANAMA, //
+					CENTRE_VILLE //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 37l) {
-			if (mTrip.getHeadsignId() == 0) {
+		} else if (mTrip.getRouteId() == 37L) {
+			if (Arrays.asList( //
+					CENTRE_VILLE, //
+					SIMARD //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(SIMARD, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 42l) {
-			if (mTrip.getHeadsignId() == 1) {
+		} else if (mTrip.getRouteId() == 42L) {
+			if (Arrays.asList( //
+					PANAMA, //
+					CENTRE_VILLE //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 44l) {
-			if (mTrip.getHeadsignId() == 1) {
+		} else if (mTrip.getRouteId() == 44L) {
+			if (Arrays.asList( //
+					PANAMA, //
+					CENTRE_VILLE //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 47l) {
-			if (mTrip.getHeadsignId() == 1) {
+		} else if (mTrip.getRouteId() == 47L) {
+			if (Arrays.asList( //
+					PANAMA, //
+					CENTRE_VILLE //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 49l) {
-			if (mTrip.getHeadsignId() == 1) {
+		} else if (mTrip.getRouteId() == 49L) {
+			if (Arrays.asList( //
+					PANAMA, //
+					CENTRE_VILLE //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 50l) {
-			if (mTrip.getHeadsignId() == 0) {
-				mTrip.setHeadsignString("Prince-Charles", mTrip.getHeadsignId());
-				return true;
-			} else if (mTrip.getHeadsignId() == 1) {
+		} else if (mTrip.getRouteId() == 50L) {
+			if (Arrays.asList( //
+					PANAMA, //
+					CENTRE_VILLE //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 59l) {
-			if (mTrip.getHeadsignId() == 0) {
+		} else if (mTrip.getRouteId() == 59L) {
+			if (Arrays.asList( //
+					CENTRE_VILLE, //
+					GAREAU //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(GAREAU, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 60l) {
-			if (mTrip.getHeadsignId() == 1) {
+		} else if (mTrip.getRouteId() == 60L) {
+			if (Arrays.asList( //
+					PANAMA, //
+					CENTRE_VILLE //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 82l) {
-			if (mTrip.getHeadsignId() == 0) {
+		} else if (mTrip.getRouteId() == 82L) {
+			if (Arrays.asList( //
+					LONGUEUIL, //
+					MARIE_VICTORIN //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(MARIE_VICTORIN, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 100l) {
-			if (mTrip.getHeadsignId() == 1) {
-				mTrip.setHeadsignString(ILE_DES_SOEURS, mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 106l) {
-			if (mTrip.getHeadsignId() == 0) {
+		} else if (mTrip.getRouteId() == 106L) {
+			if (Arrays.asList( //
+					LONGUEUIL, //
+					B_BROSSARD //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(B_BROSSARD, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 132l) {
-			if (mTrip.getHeadsignId() == 1) {
+		} else if (mTrip.getRouteId() == 132L) {
+			if (Arrays.asList( //
+					PANAMA, //
+					CENTRE_VILLE //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 142l) {
-			if (mTrip.getHeadsignId() == 0) {
+		} else if (mTrip.getRouteId() == 142L) {
+			if (Arrays.asList( //
+					COUSINEAU, //
+					PACIFIC //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(PACIFIC, mTrip.getHeadsignId());
 				return true;
-			} else if (mTrip.getHeadsignId() == 1) {
+			} else if (Arrays.asList( //
+					COUSINEAU, //
+					CENTRE_VILLE //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 821l) {
-			if (mTrip.getHeadsignId() == 0) {
+		} else if (mTrip.getRouteId() == 821L) {
+			if (Arrays.asList( //
+					GRANDE_ALLEE, //
+					ARMAND_FRAPPIER //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(ARMAND_FRAPPIER, mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 822l) {
-			if (mTrip.getHeadsignId() == 1) {
+		} else if (mTrip.getRouteId() == 822L) {
+			if (Arrays.asList( //
+					GAETAN_BOUCHER, //
+					PARC_INDUSTRIEL_G_LECLERC //
+					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(PARC_INDUSTRIEL_G_LECLERC, mTrip.getHeadsignId());
 				return true;
 			}
