@@ -134,6 +134,12 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 					).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString(CENTRE_VILLE, mTrip.getHeadsignId());
 				return true;
+			} else if (Arrays.asList( //
+					"Gaétan-Boucher", //
+					"M St-Hubert" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("M St-Hubert", mTrip.getHeadsignId());
+				return true;
 			}
 		} else if (mTrip.getRouteId() == 15L) {
 			if (Arrays.asList( //
