@@ -134,8 +134,45 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	private static HashMap<Long, RouteTripSpec> ALL_ROUTE_TRIPS2;
 
 	static {
-		//noinspection UnnecessaryLocalVariable
 		HashMap<Long, RouteTripSpec> map2 = new HashMap<>();
+		map2.put(77L, new RouteTripSpec(77L, // << WRONG trip_headsign in trips.txt
+				0, MTrip.HEADSIGN_TYPE_STRING, "Parc Ind. Brossard",
+				1, MTrip.HEADSIGN_TYPE_STRING, "CÉGEP Édouard-Montpetit")
+				.addTripSort(0,
+						Arrays.asList(
+								"3199", // Thurber et De Gentilly est #CEGEP
+								"1165", // ++
+								"3213" // Isabelle et av. Illinois #PARC_IND
+						)) //
+				.addTripSort(1,
+						Arrays.asList(
+								"3213", // Isabelle et av. Illinois #PARC_IND
+								"3502", // boul. Taschereau et av. Auteuil
+								"3199" // Thurber et De Gentilly est #CEGEP
+						))
+				.compileBothTripSort());
+		map2.put(170L, new RouteTripSpec(170L, // << WRONG trip_headsign in trips.txt
+				0, MTrip.HEADSIGN_TYPE_STRING, "Jacques-Cartier", // Boulevard
+				1, MTrip.HEADSIGN_TYPE_STRING, "Métro Papineau")
+				.addTripSort(0,
+						Arrays.asList(
+								"3289", // Cartier et METRO PAPINEAU
+								"1865", // ++
+								"3894" // Maréchal et Montarville
+						)) //
+				.addTripSort(1,
+						Arrays.asList(
+								"3894", // Maréchal et Montarville
+								"1904", // boul. Jacques-Cartier ouest et de Lyon
+								"3949", // ==
+								"1920", // !=
+								"1921", // !=
+								"5087", // !=
+								"3285", // != av. De Lorimier et Sainte-Catherine est
+								"3287", // ==
+								"3289" // Cartier et METRO PAPINEAU
+						))
+				.compileBothTripSort());
 		ALL_ROUTE_TRIPS2 = map2;
 	}
 
