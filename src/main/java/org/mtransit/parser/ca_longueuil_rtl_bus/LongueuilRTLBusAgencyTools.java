@@ -108,7 +108,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		return CleanUtils.cleanLabelFR(routeLongName);
 	}
 
-	private static final String INDUSTRIEL_SHORT = "Ind.";
+	private static final String INDUSTRIEL_SHORT = "Ind";
 	private static final String SECTEUR_SHORT = StringUtils.EMPTY; // "Sect";
 	private static final String TERMINUS_SHORT = StringUtils.EMPTY; // "Term";
 	private static final String PARCS_INDUSTRIELS = "Parcs " + INDUSTRIEL_SHORT;
@@ -131,12 +131,12 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	private static final String GRANDE_ALLEE = "Grande Allée";
 	private static final String GAETAN_BOUCHER = "Gaétan-Boucher";
 
-	private static HashMap<Long, RouteTripSpec> ALL_ROUTE_TRIPS2;
+	private static final HashMap<Long, RouteTripSpec> ALL_ROUTE_TRIPS2;
 
 	static {
 		HashMap<Long, RouteTripSpec> map2 = new HashMap<>();
 		map2.put(77L, new RouteTripSpec(77L, // << WRONG trip_headsign in trips.txt
-				0, MTrip.HEADSIGN_TYPE_STRING, "Parc Ind. Brossard",
+				0, MTrip.HEADSIGN_TYPE_STRING, "Parc Ind Brossard",
 				1, MTrip.HEADSIGN_TYPE_STRING, "CÉGEP Édouard-Montpetit")
 				.addTripSort(0,
 						Arrays.asList(
