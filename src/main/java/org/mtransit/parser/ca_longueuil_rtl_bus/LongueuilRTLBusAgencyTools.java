@@ -1,6 +1,7 @@
 package org.mtransit.parser.ca_longueuil_rtl_bus;
 
-import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.MTLog;
@@ -28,12 +29,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import static org.mtransit.parser.StringUtils.EMPTY;
+
 // http://www.rtl-longueuil.qc.ca/en-CA/open-data/
 // http://www.rtl-longueuil.qc.ca/en-CA/open-data/gtfs-files/
 // http://www.rtl-longueuil.qc.ca/transit/latestfeed/RTL.zip
 public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
-	public static void main(String[] args) {
+	public static void main(@Nullable String[] args) {
 		if (args == null || args.length == 0) {
 			args = new String[3];
 			args[0] = "input/gtfs.zip";
@@ -43,46 +46,48 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		new LongueuilRTLBusAgencyTools().start(args);
 	}
 
-	private HashSet<String> serviceIds;
+	@Nullable
+	private HashSet<Integer> serviceIdInts;
 
 	@Override
-	public void start(String[] args) {
+	public void start(@NotNull String[] args) {
 		MTLog.log("Generating RTL bus data...");
 		long start = System.currentTimeMillis();
-		this.serviceIds = extractUsefulServiceIds(args, this, true);
+		this.serviceIdInts = extractUsefulServiceIdInts(args, this, true);
 		super.start(args);
 		MTLog.log("Generating RTL bus data... DONE in %s.", Utils.getPrettyDuration(System.currentTimeMillis() - start));
 	}
 
 	@Override
 	public boolean excludingAll() {
-		return this.serviceIds != null && this.serviceIds.isEmpty();
+		return this.serviceIdInts != null && this.serviceIdInts.isEmpty();
 	}
 
 	@Override
-	public boolean excludeCalendar(GCalendar gCalendar) {
-		if (this.serviceIds != null) {
-			return excludeUselessCalendar(gCalendar, this.serviceIds);
+	public boolean excludeCalendar(@NotNull GCalendar gCalendar) {
+		if (this.serviceIdInts != null) {
+			return excludeUselessCalendarInt(gCalendar, this.serviceIdInts);
 		}
 		return super.excludeCalendar(gCalendar);
 	}
 
 	@Override
-	public boolean excludeCalendarDate(GCalendarDate gCalendarDates) {
-		if (this.serviceIds != null) {
-			return excludeUselessCalendarDate(gCalendarDates, this.serviceIds);
+	public boolean excludeCalendarDate(@NotNull GCalendarDate gCalendarDates) {
+		if (this.serviceIdInts != null) {
+			return excludeUselessCalendarDateInt(gCalendarDates, this.serviceIdInts);
 		}
 		return super.excludeCalendarDate(gCalendarDates);
 	}
 
 	@Override
-	public boolean excludeTrip(GTrip gTrip) {
-		if (this.serviceIds != null) {
-			return excludeUselessTrip(gTrip, this.serviceIds);
+	public boolean excludeTrip(@NotNull GTrip gTrip) {
+		if (this.serviceIdInts != null) {
+			return excludeUselessTripInt(gTrip, this.serviceIdInts);
 		}
 		return super.excludeTrip(gTrip);
 	}
 
+	@NotNull
 	@Override
 	public Integer getAgencyRouteType() {
 		return MAgency.ROUTE_TYPE_BUS;
@@ -90,6 +95,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	private static final String AGENCY_COLOR = "A32638";
 
+	@NotNull
 	@Override
 	public String getAgencyColor() {
 		return AGENCY_COLOR;
@@ -98,8 +104,9 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern CLEAN_TAXI = Pattern.compile("(taxi)[\\s]*-[\\s]*", Pattern.CASE_INSENSITIVE);
 	private static final String CLEAN_TAXI_REPLACEMENT = "Taxi ";
 
+	@NotNull
 	@Override
-	public String getRouteLongName(GRoute gRoute) {
+	public String getRouteLongName(@NotNull GRoute gRoute) {
 		return cleanRouteLongName(gRoute.getRouteLongName());
 	}
 
@@ -109,8 +116,8 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	private static final String INDUSTRIEL_SHORT = "Ind";
-	private static final String SECTEUR_SHORT = StringUtils.EMPTY; // "Sect";
-	private static final String TERMINUS_SHORT = StringUtils.EMPTY; // "Term";
+	private static final String SECTEUR_SHORT = EMPTY; // "Sect";
+	private static final String TERMINUS_SHORT = EMPTY; // "Term";
 	private static final String PARCS_INDUSTRIELS = "Parcs " + INDUSTRIEL_SHORT;
 	private static final String BROSSARD = "Brossard";
 	private static final String SECTEUR_PV_BROSSARD = SECTEUR_SHORT + "P-V " + BROSSARD;
@@ -135,6 +142,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	static {
 		HashMap<Long, RouteTripSpec> map2 = new HashMap<>();
+		//noinspection deprecation
 		map2.put(77L, new RouteTripSpec(77L, // << WRONG trip_headsign in trips.txt
 				0, MTrip.HEADSIGN_TYPE_STRING, "Parc Ind Brossard",
 				1, MTrip.HEADSIGN_TYPE_STRING, "CÉGEP Édouard-Montpetit")
@@ -151,6 +159,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 								"3199" // Thurber et De Gentilly est #CEGEP
 						))
 				.compileBothTripSort());
+		//noinspection deprecation
 		map2.put(170L, new RouteTripSpec(170L, // << WRONG trip_headsign in trips.txt
 				0, MTrip.HEADSIGN_TYPE_STRING, "Jacques-Cartier", // Boulevard
 				1, MTrip.HEADSIGN_TYPE_STRING, "Métro Papineau")
@@ -177,23 +186,25 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	@Override
-	public int compareEarly(long routeId, List<MTripStop> list1, List<MTripStop> list2, MTripStop ts1, MTripStop ts2, GStop ts1GStop, GStop ts2GStop) {
+	public int compareEarly(long routeId, @NotNull List<MTripStop> list1, @NotNull List<MTripStop> list2, @NotNull MTripStop ts1, @NotNull MTripStop ts2, @NotNull GStop ts1GStop, @NotNull GStop ts2GStop) {
 		if (ALL_ROUTE_TRIPS2.containsKey(routeId)) {
 			return ALL_ROUTE_TRIPS2.get(routeId).compare(routeId, list1, list2, ts1, ts2, ts1GStop, ts2GStop, this);
 		}
 		return super.compareEarly(routeId, list1, list2, ts1, ts2, ts1GStop, ts2GStop);
 	}
 
+	@NotNull
 	@Override
-	public ArrayList<MTrip> splitTrip(MRoute mRoute, GTrip gTrip, GSpec gtfs) {
+	public ArrayList<MTrip> splitTrip(@NotNull MRoute mRoute, @Nullable GTrip gTrip, @NotNull GSpec gtfs) {
 		if (ALL_ROUTE_TRIPS2.containsKey(mRoute.getId())) {
 			return ALL_ROUTE_TRIPS2.get(mRoute.getId()).getAllTrips();
 		}
 		return super.splitTrip(mRoute, gTrip, gtfs);
 	}
 
+	@NotNull
 	@Override
-	public Pair<Long[], Integer[]> splitTripStop(MRoute mRoute, GTrip gTrip, GTripStop gTripStop, ArrayList<MTrip> splitTrips, GSpec routeGTFS) {
+	public Pair<Long[], Integer[]> splitTripStop(@NotNull MRoute mRoute, @NotNull GTrip gTrip, @NotNull GTripStop gTripStop, @NotNull ArrayList<MTrip> splitTrips, @NotNull GSpec routeGTFS) {
 		if (ALL_ROUTE_TRIPS2.containsKey(mRoute.getId())) {
 			return SplitUtils.splitTripStop(mRoute, gTrip, gTripStop, routeGTFS, ALL_ROUTE_TRIPS2.get(mRoute.getId()), this);
 		}
@@ -201,15 +212,18 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	@Override
-	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip, GSpec gtfs) {
+	public void setTripHeadsign(@NotNull MRoute mRoute, @NotNull MTrip mTrip, @NotNull GTrip gTrip, @NotNull GSpec gtfs) {
 		if (ALL_ROUTE_TRIPS2.containsKey(mRoute.getId())) {
 			return; // split
 		}
-		mTrip.setHeadsignString(cleanTripHeadsign(gTrip.getTripHeadsign()), gTrip.getDirectionId());
+		mTrip.setHeadsignString(
+				cleanTripHeadsign(gTrip.getTripHeadsignOrDefault()),
+				gTrip.getDirectionIdOrDefault()
+		);
 	}
 
 	@Override
-	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
+	public boolean mergeHeadsign(@NotNull MTrip mTrip, @NotNull MTrip mTripToMerge) {
 		List<String> headsignsValues = Arrays.asList(mTrip.getHeadsignValue(), mTripToMerge.getHeadsignValue());
 		if (Arrays.asList( //
 				TERMINUS_PANAMA, //
@@ -332,8 +346,9 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern INDUSTRIEL_ = CleanUtils.cleanWords("industriel", "industriels");
 	private static final String INDUSTRIEL_REPLACEMENT = CleanUtils.cleanWordsReplacement(INDUSTRIEL_SHORT);
 
+	@NotNull
 	@Override
-	public String cleanTripHeadsign(String tripHeadsign) {
+	public String cleanTripHeadsign(@NotNull String tripHeadsign) {
 		tripHeadsign = CleanUtils.cleanSlashes(tripHeadsign);
 		tripHeadsign = Utils.replaceAll(tripHeadsign, CleanUtils.SPACE_CHARS, CleanUtils.SPACE);
 		tripHeadsign = CENTRE_VILLE_.matcher(tripHeadsign).replaceAll(CENTRE_VILLE_REPLACEMENT);
@@ -347,10 +362,11 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	private static final Pattern RTL_LONG = Pattern.compile("(du reseau de transport de longueuil)", Pattern.CASE_INSENSITIVE);
-	private static final String RTL_SHORT = "R.T.L.";
+	private static final String RTL_SHORT = "RTL";
 
+	@NotNull
 	@Override
-	public String cleanStopName(String gStopName) {
+	public String cleanStopName(@NotNull String gStopName) {
 		gStopName = CleanUtils.toLowerCaseUpperCaseWords(Locale.FRENCH, gStopName);
 		gStopName = CleanUtils.CLEAN_ET.matcher(gStopName).replaceAll(CleanUtils.CLEAN_ET_REPLACEMENT);
 		gStopName = RTL_LONG.matcher(gStopName).replaceAll(RTL_SHORT);
