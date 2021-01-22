@@ -327,8 +327,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 				return true;
 			}
 		}
-		MTLog.logFatal("Unexpected trips to merge %s & %s", mTrip, mTripToMerge);
-		return false;
+		throw new MTLog.Fatal("Unexpected trips to merge %s & %s", mTrip, mTripToMerge);
 	}
 
 	private static final Pattern CIVIQUE_ = Pattern.compile("((^|\\W)(" + "civique ([\\d]+)" + ")(\\W|$))", Pattern.CASE_INSENSITIVE);
@@ -364,10 +363,16 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern RTL_LONG = Pattern.compile("(du reseau de transport de longueuil)", Pattern.CASE_INSENSITIVE);
 	private static final String RTL_SHORT = "RTL";
 
+	private String[] getIgnoredWords() {
+		return new String[] {
+			"ENA", "RTL"
+		};
+	}
+
 	@NotNull
 	@Override
 	public String cleanStopName(@NotNull String gStopName) {
-		gStopName = CleanUtils.toLowerCaseUpperCaseWords(Locale.FRENCH, gStopName);
+		gStopName = CleanUtils.toLowerCaseUpperCaseWords(Locale.FRENCH, gStopName, getIgnoredWords());
 		gStopName = CleanUtils.CLEAN_ET.matcher(gStopName).replaceAll(CleanUtils.CLEAN_ET_REPLACEMENT);
 		gStopName = RTL_LONG.matcher(gStopName).replaceAll(RTL_SHORT);
 		gStopName = CIVIQUE_.matcher(gStopName).replaceAll(CIVIQUE_REPLACEMENT);
