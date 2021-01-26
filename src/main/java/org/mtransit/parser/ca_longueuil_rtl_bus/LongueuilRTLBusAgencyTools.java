@@ -364,8 +364,8 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	private static final String RTL_SHORT = "RTL";
 
 	private String[] getIgnoredWords() {
-		return new String[] {
-			"ENA", "RTL"
+		return new String[]{
+				"CIBC", "ENA", "IGA", "RTL",
 		};
 	}
 
