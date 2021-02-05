@@ -2,7 +2,8 @@ package org.mtransit.parser.ca_longueuil_rtl_bus;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mtransit.parser.CleanUtils;
+import org.mtransit.commons.CleanUtils;
+import org.mtransit.commons.RegexUtils;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.MTLog;
 import org.mtransit.parser.Utils;
@@ -128,10 +129,10 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public String cleanTripHeadsign(@NotNull String tripHeadsign) {
 		tripHeadsign = CleanUtils.cleanSlashes(tripHeadsign);
-		tripHeadsign = Utils.replaceAll(tripHeadsign, CleanUtils.SPACE_CHARS, CleanUtils.SPACE);
+		tripHeadsign = RegexUtils.replaceAllNN(tripHeadsign, CleanUtils.SPACE_CHARS, CleanUtils.SPACE);
 		tripHeadsign = CIVIQUE_.matcher(tripHeadsign).replaceAll(CIVIQUE_REPLACEMENT);
 		tripHeadsign = RTL_LONG.matcher(tripHeadsign).replaceAll(RTL_SHORT);
-		tripHeadsign = Utils.replaceAll(tripHeadsign, CleanUtils.SPACE_ST, CleanUtils.SPACE);
+		tripHeadsign = RegexUtils.replaceAllNN(tripHeadsign, CleanUtils.SPACE_ST, CleanUtils.SPACE);
 		tripHeadsign = CleanUtils.cleanBounds(Locale.FRENCH, tripHeadsign);
 		tripHeadsign = CleanUtils.cleanStreetTypesFRCA(tripHeadsign);
 		return CleanUtils.cleanLabelFR(tripHeadsign);
