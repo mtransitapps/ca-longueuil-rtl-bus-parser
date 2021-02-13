@@ -95,11 +95,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	@NotNull
 	@Override
-	public String getRouteLongName(@NotNull GRoute gRoute) {
-		return cleanRouteLongName(gRoute.getRouteLongName());
-	}
-
-	private String cleanRouteLongName(String routeLongName) {
+	public String cleanRouteLongName(@NotNull String routeLongName) {
 		routeLongName = CLEAN_TAXI.matcher(routeLongName).replaceAll(CLEAN_TAXI_REPLACEMENT);
 		return CleanUtils.cleanLabelFR(routeLongName);
 	}
@@ -115,11 +111,6 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public boolean directionFinderEnabled() {
 		return true;
-	}
-
-	@Override
-	public boolean mergeHeadsign(@NotNull MTrip mTrip, @NotNull MTrip mTripToMerge) {
-		throw new MTLog.Fatal("Unexpected trips to merge %s & %s", mTrip, mTripToMerge);
 	}
 
 	private static final Pattern CIVIQUE_ = Pattern.compile("((^|\\W)(" + "civique ([\\d]+)" + ")(\\W|$))", Pattern.CASE_INSENSITIVE);
@@ -139,7 +130,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	private static final Pattern RTL_LONG = Pattern.compile("((du )?r[eé]seau (de )?transport (de )?longueuil)",
-			Pattern.CASE_INSENSITIVE | Pattern.CANON_EQ);
+			Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.CANON_EQ);
 	private static final String RTL_SHORT = "RTL";
 
 	private String[] getIgnoredWords() {
