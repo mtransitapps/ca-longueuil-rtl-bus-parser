@@ -1,11 +1,13 @@
 package org.mtransit.parser.ca_longueuil_rtl_bus;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.mtransit.commons.CleanUtils;
 import org.mtransit.commons.RegexUtils;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.mt.data.MAgency;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -16,6 +18,12 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	public static void main(@NotNull String[] args) {
 		new LongueuilRTLBusAgencyTools().start(args);
+	}
+
+	@Nullable
+	@Override
+	public List<Locale> getSupportedLanguages() {
+		return LANG_FR_EN;
 	}
 
 	@NotNull
@@ -35,12 +43,19 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		return MAgency.ROUTE_TYPE_BUS;
 	}
 
-	private static final String AGENCY_COLOR = "A32638";
-
-	@NotNull
 	@Override
-	public String getAgencyColor() {
-		return AGENCY_COLOR;
+	public boolean defaultAgencyColorEnabled() {
+		return true;
+	}
+
+	@Override
+	public boolean defaultRouteIdEnabled() {
+		return true;
+	}
+
+	@Override
+	public boolean useRouteShortNameForRouteId() {
+		return false;
 	}
 
 	private static final Pattern CLEAN_TAXI = Pattern.compile("(taxi)[\\s]*-[\\s]*", Pattern.CASE_INSENSITIVE);
