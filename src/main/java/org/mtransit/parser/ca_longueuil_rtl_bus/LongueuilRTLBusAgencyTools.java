@@ -58,7 +58,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		return false;
 	}
 
-	private static final Pattern CLEAN_TAXI = Pattern.compile("(taxi)[\\s]*-[\\s]*", Pattern.CASE_INSENSITIVE);
+	private static final Pattern CLEAN_TAXI = Pattern.compile("(taxi)\\s*-\\s*", Pattern.CASE_INSENSITIVE);
 	private static final String CLEAN_TAXI_REPLACEMENT = "Taxi ";
 
 	@NotNull
@@ -73,7 +73,7 @@ public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 		return true;
 	}
 
-	private static final Pattern CIVIQUE_ = Pattern.compile("((^|\\W)(" + "civique ([\\d]+)" + ")(\\W|$))", Pattern.CASE_INSENSITIVE);
+	private static final Pattern CIVIQUE_ = Pattern.compile("((^|\\W)(" + "civique (\\d+)" + ")(\\W|$))", Pattern.CASE_INSENSITIVE);
 	private static final String CIVIQUE_REPLACEMENT = "$2" + "#$4" + "$5";
 
 	@NotNull
