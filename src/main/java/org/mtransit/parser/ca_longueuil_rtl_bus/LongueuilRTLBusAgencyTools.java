@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 // https://www.rtl-longueuil.qc.ca/en-CA/open-data/
 // https://www.rtl-longueuil.qc.ca/en-CA/open-data/gtfs-files/
-// https://www.rtl-longueuil.qc.ca/transit/latestfeed/RTL.zip
 public class LongueuilRTLBusAgencyTools extends DefaultAgencyTools {
 
 	public static void main(@NotNull String[] args) {
